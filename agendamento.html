@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Agendamento Online - Doc &amp; Dog 24h | Veterinário em Sorocaba</title>
+<meta name="description" content="Agende consulta, retorno ou avaliação geriátrica na Doc &amp; Dog 24h em menos de 1 minuto.">
+<meta name="theme-color" content="#003530">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d4d47'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="assets/js/tailwind.config.js"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/agendamento.css">
+</head>
+<body class="bg-surface text-on-surface antialiased font-sans text-body-md min-h-screen">
+
+<div class="booking-bg" aria-hidden="true">
+  <div class="blob w-[520px] h-[520px] bg-primary-fixed -top-40 -left-40"></div>
+  <div class="blob w-[420px] h-[420px] bg-secondary-container/60 top-1/3 -right-40" style="animation-delay:-7s"></div>
+</div>
+
+<!-- Cabeçalho -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30">
+  <div class="max-w-6xl mx-auto px-5 md:px-6 h-16 md:h-20 flex items-center justify-between gap-4">
+    <a class="flex items-center gap-3 group" href="index.html" aria-label="Voltar ao site da Doc &amp; Dog 24h">
+      <div class="w-10 h-10 rounded-xl bg-primary-container text-white flex items-center justify-center transition-transform duration-500 group-hover:rotate-[-10deg] group-hover:scale-110">
+        <span class="material-symbols-outlined text-[22px]">pets</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-headline-sm font-bold text-primary tracking-tight leading-tight">Doc &amp; Dog 24h</span>
+        <span class="text-[10px] tracking-wider uppercase font-semibold text-secondary">Agendamento online</span>
+      </div>
+    </a>
+    <div class="flex items-center gap-2">
+      <a href="tel:1530355006" class="btn hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-outline-variant/60 text-primary font-semibold text-label-md hover:bg-white">
+        <span class="material-symbols-outlined text-[18px]">call</span>(15) 3035-5006
+      </a>
+      <a href="index.html" class="btn inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white border border-outline-variant/60 text-primary font-semibold text-label-md hover:border-secondary/40">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span><span class="hidden sm:inline">Voltar ao site</span><span class="sm:hidden">Site</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="relative max-w-6xl mx-auto px-5 md:px-6 pt-8 md:pt-12 pb-32 lg:pb-16">
+  <div class="text-center max-w-2xl mx-auto mb-8 md:mb-10 bk-fade-in">
+    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/30 border border-secondary/20 text-label-caps text-secondary"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>RESPOSTA IMEDIATA</span>
+    <h1 class="mt-4 text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight">Agende sua consulta em menos de 1 minuto</h1>
+    <p class="mt-2 text-body-md text-on-surface-variant">Emergência? Não precisa agendar: <a href="tel:1530355006" class="font-semibold text-secondary hover:underline underline-offset-4">ligue (15) 3035-5006</a> ou venha direto, estamos abertos 24h.</p>
+  </div>
+
+  <!-- Stepper -->
+  <nav aria-label="Etapas do agendamento" class="max-w-3xl mx-auto mb-8 bk-fade-in" style="animation-delay:.1s">
+    <ol class="stepper relative grid grid-cols-4">
+      <li class="step" data-step="0"><span class="step-dot"><span class="step-num">1</span><span class="material-symbols-outlined step-check">check</span></span><span class="step-label">Serviço</span></li>
+      <li class="step" data-step="1"><span class="step-dot"><span class="step-num">2</span><span class="material-symbols-outlined step-check">check</span></span><span class="step-label">Dia e horário</span></li>
+      <li class="step" data-step="2"><span class="step-dot"><span class="step-num">3</span><span class="material-symbols-outlined step-check">check</span></span><span class="step-label">Tutor e pet</span></li>
+      <li class="step" data-step="3"><span class="step-dot"><span class="step-num">4</span><span class="material-symbols-outlined step-check">check</span></span><span class="step-label">Confirmar</span></li>
+      <span class="stepper-track" aria-hidden="true"><span class="stepper-fill" id="stepper-fill"></span></span>
+    </ol>
+  </nav>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+    <!-- Assistente -->
+    <section class="lg:col-span-8 apple-card rounded-3xl p-5 sm:p-8 bk-fade-in overflow-hidden" style="animation-delay:.2s" id="wizard" aria-live="polite">
+
+      <!-- Passo 1: serviço -->
+      <div class="bk-panel" data-panel="0">
+        <h2 class="text-headline-md-mobile md:text-headline-md text-primary">Qual atendimento você precisa?</h2>
+        <p class="text-body-sm text-on-surface-variant mt-1">Selecione o tipo de atendimento.</p>
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3" id="service-list" role="radiogroup" aria-label="Serviço"></div>
+
+        <h3 class="mt-8 text-headline-sm text-primary">Prefere algum profissional?</h3>
+        <p class="text-body-sm text-on-surface-variant mt-1">Opcional. Se não tiver preferência, encaminhamos ao veterinário disponível.</p>
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3" id="pro-list" role="radiogroup" aria-label="Profissional"></div>
+      </div>
+
+      <!-- Passo 2: data e hora -->
+      <div class="bk-panel" data-panel="1" hidden>
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h2 class="text-headline-md-mobile md:text-headline-md text-primary">Escolha o dia</h2>
+            <p class="text-body-sm text-on-surface-variant mt-1" id="month-label">Até 30 dias de antecedência</p>
+          </div>
+          <div class="hidden sm:flex gap-2">
+            <button type="button" class="day-nav" data-dir="-1" aria-label="Dias anteriores"><span class="material-symbols-outlined">chevron_left</span></button>
+            <button type="button" class="day-nav" data-dir="1" aria-label="Próximos dias"><span class="material-symbols-outlined">chevron_right</span></button>
+          </div>
+        </div>
+        <div class="day-strip mt-5" id="day-strip" role="radiogroup" aria-label="Dia"></div>
+
+        <div class="mt-8 flex items-end justify-between gap-4">
+          <div>
+            <h3 class="text-headline-sm text-primary">Horários disponíveis</h3>
+            <p class="text-body-sm text-on-surface-variant mt-1" id="slot-info">Selecione um dia para ver os horários.</p>
+          </div>
+          <div class="hidden sm:flex items-center gap-3 text-[11px] text-on-surface-variant">
+            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-white border border-outline-variant"></span>Livre</span>
+            <span class="inline-flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-surface-container"></span>Ocupado</span>
+          </div>
+        </div>
+        <div class="mt-4 space-y-5" id="slot-groups"></div>
+      </div>
+
+      <!-- Passo 3: dados -->
+      <form class="bk-panel" data-panel="2" id="form-dados" novalidate hidden>
+        <h2 class="text-headline-md-mobile md:text-headline-md text-primary">Dados do tutor e do pet</h2>
+        <p class="text-body-sm text-on-surface-variant mt-1">Usamos o WhatsApp para confirmar e enviar o lembrete.</p>
+
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <label class="field">
+            <span class="field-label">Nome do tutor(a)</span>
+            <span class="field-wrap"><span class="material-symbols-outlined">person</span><input type="text" id="f-tutor" name="tutor" autocomplete="name" placeholder="Seu nome completo" required></span>
+            <span class="field-error">Informe seu nome.</span>
+          </label>
+          <label class="field">
+            <span class="field-label">WhatsApp</span>
+            <span class="field-wrap"><span class="material-symbols-outlined">smartphone</span><input type="tel" id="f-tel" name="telefone" autocomplete="tel" inputmode="tel" placeholder="(15) 99999-9999" required></span>
+            <span class="field-error">Informe um WhatsApp válido com DDD.</span>
+          </label>
+          <label class="field">
+            <span class="field-label">Nome do pet</span>
+            <span class="field-wrap"><span class="material-symbols-outlined">pets</span><input type="text" id="f-pet" name="pet" placeholder="Ex.: Pituca" required></span>
+            <span class="field-error">Informe o nome do pet.</span>
+          </label>
+          <label class="field">
+            <span class="field-label">Idade aproximada <span class="text-on-surface-variant font-normal">(opcional)</span></span>
+            <span class="field-wrap"><span class="material-symbols-outlined">cake</span>
+              <select id="f-idade" name="idade">
+                <option value="">Selecione</option>
+                <option>Filhote (até 1 ano)</option>
+                <option>Adulto (1 a 7 anos)</option>
+                <option>Idoso (7 anos ou mais)</option>
+              </select>
+            </span>
+          </label>
+        </div>
+
+        <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <fieldset class="field" id="fs-especie">
+            <legend class="field-label">Espécie</legend>
+            <div class="grid grid-cols-2 gap-3 mt-1.5">
+              <label class="choice"><input type="radio" name="especie" value="Canina" required><span class="choice-box"><span class="choice-emoji">🐶</span>Cão</span></label>
+              <label class="choice"><input type="radio" name="especie" value="Felina"><span class="choice-box"><span class="choice-emoji">🐱</span>Gato</span></label>
+            </div>
+            <span class="field-error">Selecione a espécie.</span>
+          </fieldset>
+          <fieldset class="field" id="fs-sexo">
+            <legend class="field-label">Sexo do pet</legend>
+            <div class="grid grid-cols-2 gap-3 mt-1.5">
+              <label class="choice"><input type="radio" name="sexo" value="Macho" required><span class="choice-box"><span class="material-symbols-outlined">male</span>Macho</span></label>
+              <label class="choice"><input type="radio" name="sexo" value="Fêmea"><span class="choice-box"><span class="material-symbols-outlined">female</span>Fêmea</span></label>
+            </div>
+            <span class="field-error">Selecione o sexo.</span>
+          </fieldset>
+        </div>
+
+        <label class="field mt-5">
+          <span class="field-label">Conte rapidamente o motivo <span class="text-on-surface-variant font-normal">(opcional)</span></span>
+          <span class="field-wrap items-start"><span class="material-symbols-outlined mt-3">edit_note</span><textarea id="f-obs" name="obs" rows="3" maxlength="300" placeholder="Ex.: está bebendo mais água e mais cansado nos passeios"></textarea></span>
+        </label>
+
+        <label class="mt-5 flex items-start gap-3 text-body-sm text-on-surface-variant cursor-pointer" id="lgpd-wrap">
+          <input type="checkbox" id="f-lgpd" class="mt-0.5 w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary" required>
+          <span>Autorizo o uso dos meus dados para o agendamento e o contato pelo WhatsApp, conforme a LGPD.</span>
+        </label>
+      </form>
+
+      <!-- Passo 4: revisão -->
+      <div class="bk-panel" data-panel="3" hidden>
+        <h2 class="text-headline-md-mobile md:text-headline-md text-primary">Confira e confirme</h2>
+        <p class="text-body-sm text-on-surface-variant mt-1">Está tudo certo? Toque em editar para alterar.</p>
+        <dl class="mt-6 divide-y divide-outline-variant/30 rounded-2xl border border-outline-variant/40 overflow-hidden" id="review"></dl>
+        <div class="mt-5 flex items-start gap-3 p-4 rounded-2xl bg-secondary/5 border border-secondary/20 text-body-sm text-on-surface">
+          <span class="material-symbols-outlined text-secondary">notifications_active</span>
+          <p>Você vai receber a confirmação e um lembrete no WhatsApp antes do horário. Chegue com 10 minutos de antecedência.</p>
+        </div>
+      </div>
+
+      <!-- Sucesso -->
+      <div class="bk-panel text-center py-4" data-panel="4" hidden>
+        <div class="success-mark mx-auto" aria-hidden="true">
+          <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="36" fill="none" stroke="currentColor" stroke-width="5"/><path d="M24 41 L35 52 L57 29" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 class="mt-6 text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight">Horário marcado!</h2>
+        <p class="mt-2 text-body-lg text-on-surface-variant" id="success-text"></p>
+        <p class="mt-1 text-body-sm text-on-surface-variant">Código do agendamento: <strong class="text-primary tracking-wider" id="success-code"></strong></p>
+
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto">
+          <a id="btn-wa" target="_blank" rel="noopener noreferrer" class="btn btn-shine btn-glow inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-vitality text-white font-bold text-label-lg sm:col-span-2">
+            <span class="material-symbols-outlined">chat</span>Enviar confirmação no WhatsApp
+          </a>
+          <a id="btn-gcal" target="_blank" rel="noopener noreferrer" class="btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-outline-variant/60 text-primary font-semibold text-label-md hover:bg-white">
+            <span class="material-symbols-outlined text-[18px]">calendar_add_on</span>Google Agenda
+          </a>
+          <button type="button" id="btn-ics" class="btn inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-outline-variant/60 text-primary font-semibold text-label-md hover:bg-white">
+            <span class="material-symbols-outlined text-[18px]">download</span>Salvar na agenda (.ics)
+          </button>
+        </div>
+        <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-label-lg">
+          <button type="button" id="btn-new" class="arrow-link inline-flex items-center gap-1 font-bold text-secondary hover:text-primary">Marcar outro horário <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button>
+          <a href="index.html" class="inline-flex items-center gap-1 font-semibold text-on-surface-variant hover:text-primary">Voltar ao site</a>
+        </div>
+      </div>
+
+      <!-- Navegação -->
+      <div class="bk-actions" id="bk-actions">
+        <button type="button" id="btn-back" class="btn inline-flex items-center gap-1.5 px-5 py-3 rounded-full text-primary font-semibold text-label-lg hover:bg-surface-container-low" hidden>
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>Voltar
+        </button>
+        <span class="flex-1"></span>
+        <button type="button" id="btn-next" class="btn btn-shine btn-glow inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-secondary text-white font-bold text-label-lg hover:bg-primary-container disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none" disabled>
+          <span id="btn-next-label">Continuar</span><span class="material-symbols-outlined text-[20px]" id="btn-next-icon">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Resumo -->
+    <aside class="lg:col-span-4 lg:sticky lg:top-28 space-y-4 bk-fade-in" style="animation-delay:.3s">
+      <div class="apple-card rounded-3xl p-6">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center"><span class="material-symbols-outlined">receipt_long</span></div>
+          <h2 class="text-headline-sm text-primary">Seu agendamento</h2>
+        </div>
+        <ul class="space-y-3.5" id="summary">
+          <li class="sum-row" data-sum="servico"><span class="material-symbols-outlined">stethoscope</span><div><p class="sum-k">Serviço</p><p class="sum-v">—</p></div></li>
+          <li class="sum-row" data-sum="profissional"><span class="material-symbols-outlined">badge</span><div><p class="sum-k">Profissional</p><p class="sum-v">—</p></div></li>
+          <li class="sum-row" data-sum="data"><span class="material-symbols-outlined">calendar_month</span><div><p class="sum-k">Data</p><p class="sum-v">—</p></div></li>
+          <li class="sum-row" data-sum="hora"><span class="material-symbols-outlined">schedule</span><div><p class="sum-k">Horário</p><p class="sum-v">—</p></div></li>
+          <li class="sum-row" data-sum="pet"><span class="material-symbols-outlined">pets</span><div><p class="sum-k">Pet</p><p class="sum-v">—</p></div></li>
+        </ul>
+        <div class="mt-5 pt-5 border-t border-outline-variant/30 text-body-sm text-on-surface-variant flex items-start gap-2">
+          <span class="material-symbols-outlined text-[18px] text-secondary">location_on</span>
+          <span>R. Cel. Nogueira Padilha, 834 · Vila Hortência, Sorocaba/SP · Estacionamento próprio</span>
+        </div>
+      </div>
+      <div class="rounded-3xl p-5 bg-primary text-white emergency-bg flex items-start gap-3">
+        <span class="pulse-ring w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-secondary-fixed">emergency</span></span>
+        <div>
+          <p class="font-bold">É uma emergência?</p>
+          <p class="text-body-sm text-on-primary-container mt-0.5">Não espere: atendemos sem agendamento, 24h.</p>
+          <a href="tel:1530355006" class="mt-2 inline-flex items-center gap-1 text-label-lg font-bold text-secondary-fixed hover:underline underline-offset-4">Ligar (15) 3035-5006</a>
+        </div>
+      </div>
+      <div class="hidden lg:flex items-center gap-3 px-2 text-body-sm text-on-surface-variant">
+        <span class="material-symbols-outlined text-secondary">verified_user</span>Seus dados são protegidos conforme a LGPD.
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/store.js"></script>
+<script src="assets/js/agendamento.js"></script>
+</body>
+</html>

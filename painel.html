@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Painel da Clínica - Doc &amp; Dog 24h</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#003530">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d4d47'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="assets/js/tailwind.config.js"></script>
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/agendamento.css">
+<style>
+  .appt { animation: slot-in .5s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 50ms); }
+  .appt.removing { animation: appt-out .4s var(--ease-out) forwards; }
+  @keyframes appt-out { to { opacity: 0; transform: translateX(40px); height: 0; margin: 0; padding-top: 0; padding-bottom: 0; } }
+  .day .d-count { display: inline-block; margin-top: .3rem; min-width: 20px; padding: 0 .35rem; border-radius: 9999px; font-size: 11px; font-weight: 700; background: rgba(16,185,129,.15); color: var(--secondary); }
+  .day[aria-checked="true"] .d-count { background: rgba(255,255,255,.25); color: #fff; }
+</style>
+</head>
+<body class="bg-surface-container-low text-on-surface antialiased font-sans text-body-md min-h-screen">
+
+<header class="sticky top-0 z-40 bg-primary text-white">
+  <div class="max-w-6xl mx-auto px-5 md:px-6 h-16 flex items-center justify-between gap-4">
+    <a class="flex items-center gap-3" href="index.html">
+      <div class="w-10 h-10 rounded-xl bg-primary-container text-secondary-fixed flex items-center justify-center"><span class="material-symbols-outlined">pets</span></div>
+      <div class="flex flex-col leading-tight">
+        <span class="font-bold">Doc &amp; Dog 24h</span>
+        <span class="text-[10px] tracking-wider uppercase font-semibold text-secondary-fixed">Painel da clínica</span>
+      </div>
+    </a>
+    <div class="flex items-center gap-2">
+      <a href="agendamento.html" class="btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-vitality text-white font-semibold text-label-md"><span class="material-symbols-outlined text-[18px]">add</span><span class="hidden sm:inline">Novo agendamento</span></a>
+      <a href="index.html" class="btn inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-white/25 text-white font-semibold text-label-md hover:bg-white/10"><span class="material-symbols-outlined text-[18px]">language</span><span class="hidden sm:inline">Ver site</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="bg-amber-50 border-b border-amber-200 text-amber-900 text-body-sm">
+  <div class="max-w-6xl mx-auto px-5 md:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2">
+    <span class="inline-flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">info</span>Modo demonstração: os agendamentos ficam salvos neste navegador.</span>
+    <button id="btn-seed" class="font-semibold underline underline-offset-4 hover:text-amber-700">Gerar agendamentos de exemplo</button>
+  </div>
+</div>
+
+<main class="max-w-6xl mx-auto px-5 md:px-6 py-8 space-y-6">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 bk-fade-in">
+    <div>
+      <p class="text-label-caps text-secondary uppercase tracking-widest" id="today-label"></p>
+      <h1 class="text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight">Agenda de atendimentos</h1>
+    </div>
+    <label class="field md:w-72">
+      <span class="field-wrap bg-white"><span class="material-symbols-outlined">search</span><input id="search" type="search" placeholder="Buscar tutor, pet ou código"></span>
+    </label>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 bk-fade-in" style="animation-delay:.1s">
+    <div class="apple-card rounded-2xl p-5"><p class="text-body-sm text-on-surface-variant">Hoje</p><p class="text-[36px] font-extrabold text-primary leading-tight" id="st-hoje">0</p></div>
+    <div class="apple-card rounded-2xl p-5"><p class="text-body-sm text-on-surface-variant">Próximos 7 dias</p><p class="text-[36px] font-extrabold text-primary leading-tight" id="st-semana">0</p></div>
+    <div class="apple-card rounded-2xl p-5"><p class="text-body-sm text-on-surface-variant">Avaliações geriátricas</p><p class="text-[36px] font-extrabold text-secondary leading-tight" id="st-geri">0</p></div>
+    <div class="apple-card rounded-2xl p-5"><p class="text-body-sm text-on-surface-variant">Total agendado</p><p class="text-[36px] font-extrabold text-primary leading-tight" id="st-total">0</p></div>
+  </div>
+
+  <div class="apple-card rounded-3xl p-5 md:p-6 bk-fade-in" style="animation-delay:.2s">
+    <div class="day-strip" id="days" role="radiogroup" aria-label="Dia"></div>
+  </div>
+
+  <section class="apple-card rounded-3xl p-5 md:p-6 bk-fade-in" style="animation-delay:.3s">
+    <div class="flex items-center justify-between gap-4 mb-4">
+      <h2 class="text-headline-sm text-primary" id="list-title">Agenda</h2>
+      <span class="text-body-sm text-on-surface-variant" id="list-count"></span>
+    </div>
+    <ul class="space-y-3" id="list"></ul>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/store.js"></script>
+<script>
+(function () {
+  'use strict';
+  var D = window.DocDog;
+  var $ = function (s) { return document.querySelector(s); };
+  var hoje = new Date();
+  var hojeIso = D.isoDate(hoje);
+  var sel = hojeIso;
+  var DIAS = 30;
+
+  $('#today-label').textContent = D.fmtLong(hojeIso);
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+
+  function renderStats() {
+    var all = D.list();
+    var fim = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 7);
+    var fimIso = D.isoDate(fim);
+    $('#st-hoje').textContent = all.filter(function (b) { return b.data === hojeIso; }).length;
+    $('#st-semana').textContent = all.filter(function (b) { return b.data >= hojeIso && b.data < fimIso; }).length;
+    $('#st-geri').textContent = all.filter(function (b) { return b.servico === 'geriatrica' && b.data >= hojeIso; }).length;
+    $('#st-total').textContent = all.filter(function (b) { return b.data >= hojeIso; }).length;
+  }
+
+  function renderDays() {
+    var wrap = $('#days');
+    wrap.innerHTML = '';
+    var all = D.list();
+    for (var i = 0; i < DIAS; i++) {
+      var d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + i);
+      var iso = D.isoDate(d);
+      var n = all.filter(function (b) { return b.data === iso; }).length;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'day';
+      b.dataset.iso = iso;
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', iso === sel ? 'true' : 'false');
+      b.innerHTML = '<span class="d-week">' + (i === 0 ? 'Hoje' : i === 1 ? 'Amanhã' : D.SEMANA[d.getDay()]) + '</span><span class="d-num">' + d.getDate() + '</span><span class="d-month">' + D.MESES[d.getMonth()] + '</span>' + (n ? '<span class="d-count">' + n + '</span>' : '');
+      b.addEventListener('click', function (e) { sel = e.currentTarget.dataset.iso; $('#search').value = ''; renderDays(); renderList(); });
+      wrap.appendChild(b);
+    }
+  }
+
+  function renderList() {
+    var q = $('#search').value.trim().toLowerCase();
+    var items = q
+      ? D.list().filter(function (b) { return (b.tutor + ' ' + b.pet + ' ' + b.id + ' ' + b.telefone).toLowerCase().indexOf(q) > -1; })
+          .sort(function (a, b) { return (a.data + a.hora).localeCompare(b.data + b.hora); })
+      : D.byDate(sel);
+    $('#list-title').textContent = q ? 'Resultados da busca' : 'Agenda de ' + (sel === hojeIso ? 'hoje' : D.fmtLong(sel));
+    $('#list-count').textContent = items.length + (items.length === 1 ? ' atendimento' : ' atendimentos');
+    var ul = $('#list');
+    ul.innerHTML = '';
+    if (!items.length) {
+      ul.innerHTML = '<li class="slots-empty">Nenhum agendamento ' + (q ? 'encontrado.' : 'para este dia ainda.') + '</li>';
+      return;
+    }
+    items.forEach(function (b, i) {
+      var s = D.servico(b.servico) || { nome: b.servico, icon: 'event' };
+      var p = D.profissional(b.profissional) || { nome: '—' };
+      var tel = (b.telefone || '').replace(/\D/g, '');
+      var li = document.createElement('li');
+      li.className = 'appt flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-2xl border border-outline-variant/40 bg-white hover:border-secondary/40 hover:shadow-md transition-all';
+      li.style.setProperty('--i', i);
+      li.innerHTML =
+        '<div class="flex items-center gap-4 flex-1 min-w-0">' +
+          '<div class="w-16 shrink-0 text-center rounded-xl bg-primary text-white py-2"><p class="text-[11px] opacity-80">' + (q ? esc(D.fmtShort(b.data)) : 'às') + '</p><p class="font-bold tabular-nums">' + esc(b.hora) + '</p></div>' +
+          '<div class="min-w-0">' +
+            '<p class="font-bold text-primary truncate">' + (b.especie === 'Felina' ? '🐱 ' : '🐶 ') + esc(b.pet) + ' <span class="font-normal text-on-surface-variant">· ' + esc(b.sexo) + (b.idade ? ' · ' + esc(b.idade) : '') + '</span></p>' +
+            '<p class="text-body-sm text-on-surface-variant truncate">Tutor(a): ' + esc(b.tutor) + ' · ' + esc(b.telefone) + '</p>' +
+            '<p class="text-body-sm mt-1 flex flex-wrap gap-1.5"><span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-semibold text-[12px]">' + esc(s.nome) + '</span><span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[12px]">' + esc(p.nome) + '</span><span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-[12px]">' + esc(b.id) + '</span></p>' +
+            (b.obs ? '<p class="text-body-sm text-on-surface mt-1 italic">“' + esc(b.obs) + '”</p>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="flex gap-2 shrink-0">' +
+          (tel ? '<a class="btn inline-flex items-center gap-1 px-4 py-2 rounded-full bg-vitality text-white font-semibold text-label-md" target="_blank" rel="noopener noreferrer" href="https://wa.me/55' + tel + '?text=' + encodeURIComponent('Olá, ' + b.tutor + '! Aqui é da Doc & Dog 24h. Confirmamos o atendimento de ' + b.pet + ' em ' + D.fmtLong(b.data) + ' às ' + b.hora + '. Até lá!') + '"><span class="material-symbols-outlined text-[18px]">chat</span>Lembrete</a>' : '') +
+          '<button class="btn btn-cancel inline-flex items-center gap-1 px-4 py-2 rounded-full border border-outline-variant/60 text-error font-semibold text-label-md hover:bg-error-container/50"><span class="material-symbols-outlined text-[18px]">close</span>Cancelar</button>' +
+        '</div>';
+      li.querySelector('.btn-cancel').addEventListener('click', function () {
+        if (!confirm('Cancelar o agendamento de ' + b.pet + ' (' + b.hora + ')?')) return;
+        li.classList.add('removing');
+        setTimeout(function () { D.remove(b.id); refresh(); toast('Agendamento cancelado'); }, 380);
+      });
+      ul.appendChild(li);
+    });
+  }
+
+  function refresh() { renderStats(); renderDays(); renderList(); }
+
+  $('#search').addEventListener('input', renderList);
+
+  $('#btn-seed').addEventListener('click', function () {
+    var tutores = [['Sonia Martins', 'Pituca', 'Canina', 'Fêmea', 'Idoso (7 anos ou mais)'], ['João Paulo Pereira', 'Astor', 'Canina', 'Macho', 'Adulto (1 a 7 anos)'], ['Ana Lima', 'Mingau', 'Felina', 'Macho', 'Idoso (7 anos ou mais)'], ['Carlos Souza', 'Luna', 'Felina', 'Fêmea', 'Filhote (até 1 ano)'], ['Marina Alves', 'Thor', 'Canina', 'Macho', 'Idoso (7 anos ou mais)'], ['Ricardo Gomes', 'Mel', 'Canina', 'Fêmea', 'Adulto (1 a 7 anos)']];
+    var servs = ['consulta', 'geriatrica', 'retorno', 'consulta', 'geriatrica', 'consulta'];
+    var pros = ['celso', 'celso', 'joao', 'neide', 'celso', 'qualquer'];
+    var n = 0;
+    for (var day = 0; day < 6; day++) {
+      var d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + day);
+      var iso = D.isoDate(d);
+      for (var k = 0; k < 3; k++) {
+        var t = tutores[(day + k) % tutores.length];
+        var sv = servs[(day * 2 + k) % servs.length];
+        var horas = D.horarios(sv);
+        var h = horas[(day + k * 3) % horas.length];
+        if (D.list().some(function (b) { return b.data === iso && b.hora === h; })) continue;
+        D.add({ id: D.code(), servico: sv, profissional: pros[(day + k) % pros.length], data: iso, hora: h, tutor: t[0], telefone: '(15) 9' + (8000 + day * 111 + k) + '-' + (1000 + k * 37), pet: t[1], especie: t[2], sexo: t[3], idade: t[4], obs: '', criadoEm: new Date().toISOString() });
+        n++;
+      }
+    }
+    refresh();
+    toast(n + ' agendamentos de exemplo criados');
+  });
+
+  // Atualiza sozinho quando um agendamento é feito em outra aba
+  window.addEventListener('storage', function () { refresh(); toast('Novo agendamento recebido'); });
+
+  var tt;
+  function toast(msg) { var t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(function () { t.classList.remove('show'); }, 2600); }
+
+  refresh();
+})();
+</script>
+</body>
+</html>
